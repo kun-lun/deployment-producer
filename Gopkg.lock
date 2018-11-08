@@ -17,34 +17,45 @@
 
 [[projects]]
   branch = "draft"
-  digest = "1:4df53a2e0a05a8cffcbb498d31277bdfe2a5ae35de2dfe2f433e2315f5537869"
+  digest = "1:07857e67294ef752abf9903a699982a3178e4495247a5b2373e8503792e2f370"
   name = "github.com/kun-lun/artifacts"
   packages = [
     "pkg/apis",
     "pkg/apis/deployments",
   ]
   pruneopts = "UT"
-  revision = "72265d37b2bb50f855259021e53b97875f58662e"
+  revision = "db21a15bdeeb696016ed9015c74b81f2623e6cf8"
 
 [[projects]]
   branch = "draft"
-  digest = "1:a2a9413f0ec91310bd0fa36ac8b7850e70e8c83bb434bd3832440efab3496713"
+  digest = "1:2f0228384d862f6e06a45d9307eea7870587236e03b9fa017c32e2ea7c9a2dab"
+  name = "github.com/kun-lun/ashandler"
+  packages = [
+    "generator",
+    "pkg/apis",
+  ]
+  pruneopts = "UT"
+  revision = "1b80f02c14091c687833ddb94bcbcf2a64f17d97"
+
+[[projects]]
+  branch = "draft"
+  digest = "1:a3a524967ed5fc60a7d7fc389ab3bffecb9bf69ada9732f2cb4b16e4c8fd4ccc"
   name = "github.com/kun-lun/common"
   packages = [
-    "errors",
     "fileio",
+    "logger",
     "storage",
   ]
   pruneopts = "UT"
-  revision = "65e1853a0f0f30d3b9ab5c54cb83cb2072639aaf"
+  revision = "cd3d290ec8ef2e6f641095d21949bb71e8aa1fb7"
 
 [[projects]]
   branch = "draft"
-  digest = "1:a255d9afe5156af6d5d6f05a67ac4dd35fcc0acfe03fc3678574b20cbbfddc57"
+  digest = "1:b54361f4b0923388f82cecdf7c024c1e651c5e680c73ee32b495d5c39af75b56"
   name = "github.com/kun-lun/test-infra"
   packages = ["pkg/apis"]
   pruneopts = "UT"
-  revision = "19afbe585b17c97983f656802f56da15711f73f6"
+  revision = "049db616e8fc61eb441a0fcaaf13895a886e2de3"
 
 [[projects]]
   branch = "master"
@@ -123,15 +134,15 @@
     "html/charset",
   ]
   pruneopts = "UT"
-  revision = "10aee181995363b41f712a55844a0dd52ea04646"
+  revision = "03003ca0c849e57b6ea29a4bab8d3cb6e4d568fe"
 
 [[projects]]
   branch = "master"
-  digest = "1:e2503f590982f6c0cc06abd7b94b17ded6804bada8eb79af753b5fb676dfdecc"
+  digest = "1:7ba061af4131fb44b30448572acd0d6fefbf63a61b97b7ef1dea0be5871c2742"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "3a76605856fddce5718553cbb8bd50ca492a7274"
+  revision = "66b7b1311ac80bbafcd2daeef9a5e6e2cd1e2399"
 
 [[projects]]
   digest = "1:4392fcf42d5cf0e3ff78c96b2acf8223d49e4fdc53eb77c99d2f8dfe4680e006"
@@ -191,7 +202,8 @@
   input-imports = [
     "github.com/kun-lun/artifacts/pkg/apis",
     "github.com/kun-lun/artifacts/pkg/apis/deployments",
-    "github.com/kun-lun/common/errors",
+    "github.com/kun-lun/ashandler/pkg/apis",
+    "github.com/kun-lun/common/logger",
     "github.com/kun-lun/common/storage",
     "github.com/kun-lun/test-infra/pkg/apis",
     "github.com/onsi/ginkgo",

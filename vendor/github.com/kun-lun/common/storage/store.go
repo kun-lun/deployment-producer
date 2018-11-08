@@ -100,6 +100,15 @@ func (s Store) GetAnsibleDir() (string, error) {
 	return s.getDir("deployments/ansible", os.ModePerm)
 }
 
+// TODO think about merge the vars dir with the global vars dir.
+func (s Store) GetAnsibleVarsDir() (string, error) {
+	return s.getDir("deployments/ansible/vars", os.ModePerm)
+}
+
+func (s Store) GetAnsibleInventoriesDir() (string, error) {
+	return s.getDir("deployments/ansible/inventories", os.ModePerm)
+}
+
 func (s Store) GetVarsDir() (string, error) {
 	return s.getDir("vars", StateMode)
 }

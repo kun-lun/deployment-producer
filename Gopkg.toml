@@ -31,7 +31,15 @@
 
 [[constraint]]
   branch = "draft"
+  name = "github.com/kun-lun/ashandler"
+
+[[constraint]]
+  branch = "draft"
   name = "github.com/kun-lun/common"
+
+[[constraint]]
+  branch = "draft"
+  name = "github.com/kun-lun/test-infra"
 
 [[constraint]]
   name = "github.com/onsi/ginkgo"
@@ -40,10 +48,6 @@
 [[constraint]]
   name = "github.com/onsi/gomega"
   version = "1.4.2"
-
-[[constraint]]
-  name = "gopkg.in/yaml.v2"
-  version = "2.2.1"
 
 [prune]
   go-tests = true
