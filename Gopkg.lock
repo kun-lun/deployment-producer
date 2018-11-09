@@ -35,11 +35,11 @@
     "pkg/apis",
   ]
   pruneopts = "UT"
-  revision = "c6763d39c90c9897f7f9c9cc426cd25f608b44d4"
+  revision = "14702ef0e3dcda9bb66e9686daaa5f349ff6a2ea"
 
 [[projects]]
   branch = "draft"
-  digest = "1:180bcbdc29e59fd120f5946d806beda182ce2b3f1e985342260a5ce24b0e444b"
+  digest = "1:b726eebaa81f759ea8b66dc110f2c705b2382f5b33c2caaaaea17093661f6015"
   name = "github.com/kun-lun/common"
   packages = [
     "fileio",
@@ -47,15 +47,15 @@
     "storage",
   ]
   pruneopts = "UT"
-  revision = "f14e6ef865944748bdf42acf2ccaf9a6188bbe01"
+  revision = "a5d5043fcc45fb30fa71a45c086fb5118a1b0cfe"
 
 [[projects]]
   branch = "draft"
-  digest = "1:b54361f4b0923388f82cecdf7c024c1e651c5e680c73ee32b495d5c39af75b56"
+  digest = "1:f5cafe096d31a9678c77cef8fb8e6734230d1e88e8ecd2c4b9adcf04fb94ee7e"
   name = "github.com/kun-lun/test-infra"
   packages = ["pkg/apis"]
   pruneopts = "UT"
-  revision = "368fe0a0517b6e91e24d889d965954bebf044fa1"
+  revision = "e4be8f9bd7831000e81452b777a9d81c9e20a83e"
 
 [[projects]]
   branch = "master"

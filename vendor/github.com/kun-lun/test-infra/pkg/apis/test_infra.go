@@ -155,7 +155,7 @@ func (ti TestInfra) BuildSampleManifest() *artifacts.Manifest {
 		},
 	}
 
-	databases := []artifacts.Database{
+	databases := []artifacts.MysqlDatabase{
 		{
 			MigrationInformation: &artifacts.MigrationInformation{
 				OriginHost:     "asd",
@@ -163,8 +163,6 @@ func (ti TestInfra) BuildSampleManifest() *artifacts.Manifest {
 				OriginUsername: "asd",
 				OriginPassword: "asd",
 			},
-			Engine:              artifacts.MysqlDB,
-			EngineVersion:       "5.7",
 			Cores:               2,
 			Storage:             5,
 			BackupRetentionDays: 35,
@@ -184,7 +182,7 @@ func (ti TestInfra) BuildSampleManifest() *artifacts.Manifest {
 		LoadBalancers:         loadBalancers,
 		StorageAccounts:       storageAccounts,
 		NetworkSecurityGroups: networkSecurityGroups,
-		Databases:             databases,
+		MysqlDatabases:        databases,
 	}
 	return m
 }

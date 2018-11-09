@@ -138,12 +138,8 @@ func (s Store) GetAnsibleDir() (string, error) {
 }
 
 // TODO think about merge the vars dir with the global vars dir.
-func (s Store) GetAnsibleVarsFilePath() (string, error) {
-	artifactsDir, err := s.GetVarsDir()
-	if err != nil {
-		return "", err
-	}
-	return path.Join(artifactsDir, "ansible_vars.yml"), nil
+func (s Store) GetAnsibleVarsDir() (string, error) {
+	return s.getDir("deployments/ansible/vars", os.ModePerm)
 }
 
 func (s Store) GetAnsibleInventoriesDir() (string, error) {
