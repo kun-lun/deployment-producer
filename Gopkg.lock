@@ -28,22 +28,21 @@
 
 [[projects]]
   branch = "draft"
-  digest = "1:15300781dac436e33a1f9c5136a09be910b2c452c94ba57da5458014960b2f6d"
+  digest = "1:3d549cbc5941adbcd992a7bb9e03648bd5b5ad24a01a11993a4b0a7b1a518704"
   name = "github.com/kun-lun/ashandler"
   packages = [
     "generator",
     "pkg/apis",
   ]
   pruneopts = "UT"
-  revision = "6adbe146c3d814839577c0f42f1cae20584c68e5"
+  revision = "27214cd2e2187f6cd9adfb55d08993dd82bed0fe"
 
 [[projects]]
   branch = "draft"
-  digest = "1:b726eebaa81f759ea8b66dc110f2c705b2382f5b33c2caaaaea17093661f6015"
+  digest = "1:a57608624310af496a275c1c233f80f0ba27c0d73914128765f48f8213b903bd"
   name = "github.com/kun-lun/common"
   packages = [
     "fileio",
-    "logger",
     "storage",
   ]
   pruneopts = "UT"
