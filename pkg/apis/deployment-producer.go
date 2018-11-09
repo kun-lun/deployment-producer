@@ -5,19 +5,25 @@ import (
 
 	"github.com/kun-lun/artifacts/pkg/apis/deployments"
 	ashandler "github.com/kun-lun/ashandler/pkg/apis"
-	"github.com/kun-lun/common/logger"
 	"github.com/kun-lun/common/storage"
 	"github.com/kun-lun/deployment-producer/dpbuilder"
 )
 
+type logger interface {
+	Step(string, ...interface{})
+	Printf(string, ...interface{})
+	Println(string)
+	Prompt(string) bool
+}
+
 type DeploymentProducer struct {
 	stateStore storage.Store
-	logger     *logger.Logger
+	logger     logger
 }
 
 func NewDeploymentProducer(
 	stateStore storage.Store,
-	logger *logger.Logger,
+	logger logger,
 ) DeploymentProducer {
 	return DeploymentProducer{
 		stateStore: stateStore,

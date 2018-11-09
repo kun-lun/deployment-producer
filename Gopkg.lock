@@ -28,14 +28,14 @@
 
 [[projects]]
   branch = "draft"
-  digest = "1:2f0228384d862f6e06a45d9307eea7870587236e03b9fa017c32e2ea7c9a2dab"
+  digest = "1:15300781dac436e33a1f9c5136a09be910b2c452c94ba57da5458014960b2f6d"
   name = "github.com/kun-lun/ashandler"
   packages = [
     "generator",
     "pkg/apis",
   ]
   pruneopts = "UT"
-  revision = "14702ef0e3dcda9bb66e9686daaa5f349ff6a2ea"
+  revision = "6adbe146c3d814839577c0f42f1cae20584c68e5"
 
 [[projects]]
   branch = "draft"
@@ -205,7 +205,6 @@
     "github.com/kun-lun/artifacts/pkg/apis",
     "github.com/kun-lun/artifacts/pkg/apis/deployments",
     "github.com/kun-lun/ashandler/pkg/apis",
-    "github.com/kun-lun/common/logger",
     "github.com/kun-lun/common/storage",
     "github.com/kun-lun/test-infra/pkg/apis",
     "github.com/onsi/ginkgo",

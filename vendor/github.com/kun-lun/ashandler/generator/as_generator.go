@@ -5,19 +5,25 @@ import (
 	"path"
 
 	"github.com/kun-lun/artifacts/pkg/apis/deployments"
-	clogger "github.com/kun-lun/common/logger"
 	"github.com/kun-lun/common/storage"
 	yaml "gopkg.in/yaml.v2"
 )
 
+type logger interface {
+	Step(string, ...interface{})
+	Printf(string, ...interface{})
+	Println(string)
+	Prompt(string) bool
+}
+
 type ASGenerator struct {
 	stateStore storage.Store
-	logger     *clogger.Logger
+	logger     logger
 }
 
 func NewASGenerator(
 	stateStore storage.Store,
-	logger *clogger.Logger,
+	logger logger,
 ) ASGenerator {
 	return ASGenerator{
 		stateStore: stateStore,
@@ -131,7 +137,7 @@ func (a ASGenerator) generatePlaybookFile(deployments []deployments.Deployment) 
 	// write the vars files
 	for _, dep := range deployments {
 		// write the files
-		varsDir, _ := a.stateStore.GetAnsibleVarsDir()
+		varsDir, _ := a.stateStore.GetAnsibleDir()
 		varsFile := path.Join(varsDir, dep.HostGroupName+".yml")
 		varsContent, _ := yaml.Marshal(dep.Vars)
 
