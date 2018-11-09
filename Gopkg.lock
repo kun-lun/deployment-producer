@@ -2,8 +2,7 @@
 
 
 [[projects]]
-  branch = "master"
-  digest = "1:59392ed8afb901aab4287d4894df8191722e34f3957716f4350c8c133ce99046"
+  digest = "1:a1038ef593beb4771c8f0f9c26e8b00410acd800af5c6864651d9bf160ea1813"
   name = "github.com/hpcloud/tail"
   packages = [
     ".",
@@ -13,18 +12,19 @@
     "winfile",
   ]
   pruneopts = "UT"
-  revision = "a1dbeea552b7c8df4b542c66073e393de198a800"
+  revision = "a30252cb686a21eb2d0b98132633053ec2f7f1e5"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "draft"
-  digest = "1:07857e67294ef752abf9903a699982a3178e4495247a5b2373e8503792e2f370"
+  digest = "1:c6634f48624c74efda2eb011ef0bc353633988208e47f70f9f8f4bf917cf26d0"
   name = "github.com/kun-lun/artifacts"
   packages = [
     "pkg/apis",
     "pkg/apis/deployments",
   ]
   pruneopts = "UT"
-  revision = "db21a15bdeeb696016ed9015c74b81f2623e6cf8"
+  revision = "707a72758b66c8d606a587cdc54f356df45e96be"
 
 [[projects]]
   branch = "draft"
@@ -35,11 +35,11 @@
     "pkg/apis",
   ]
   pruneopts = "UT"
-  revision = "1b80f02c14091c687833ddb94bcbcf2a64f17d97"
+  revision = "c6763d39c90c9897f7f9c9cc426cd25f608b44d4"
 
 [[projects]]
   branch = "draft"
-  digest = "1:a3a524967ed5fc60a7d7fc389ab3bffecb9bf69ada9732f2cb4b16e4c8fd4ccc"
+  digest = "1:180bcbdc29e59fd120f5946d806beda182ce2b3f1e985342260a5ce24b0e444b"
   name = "github.com/kun-lun/common"
   packages = [
     "fileio",
@@ -47,7 +47,7 @@
     "storage",
   ]
   pruneopts = "UT"
-  revision = "cd3d290ec8ef2e6f641095d21949bb71e8aa1fb7"
+  revision = "f14e6ef865944748bdf42acf2ccaf9a6188bbe01"
 
 [[projects]]
   branch = "draft"
@@ -55,7 +55,7 @@
   name = "github.com/kun-lun/test-infra"
   packages = ["pkg/apis"]
   pruneopts = "UT"
-  revision = "049db616e8fc61eb441a0fcaaf13895a886e2de3"
+  revision = "368fe0a0517b6e91e24d889d965954bebf044fa1"
 
 [[projects]]
   branch = "master"
@@ -175,18 +175,20 @@
 
 [[projects]]
   digest = "1:abeb38ade3f32a92943e5be54f55ed6d6e3b6602761d74b4aab4c9dd45c18abd"
-  name = "gopkg.in/fsnotify/fsnotify.v1"
+  name = "gopkg.in/fsnotify.v1"
   packages = ["."]
   pruneopts = "UT"
   revision = "c2828203cd70a50dcccfb2761f8b1f8ceef9a8e9"
+  source = "https://github.com/fsnotify/fsnotify.git"
   version = "v1.4.7"
 
 [[projects]]
-  digest = "1:3c839a777de0e6da035c9de900b60cbec463b0a89351192c1ea083eaf9e0fce0"
+  branch = "v1"
+  digest = "1:0caa92e17bc0b65a98c63e5bc76a9e844cd5e56493f8fdbb28fad101a16254d9"
   name = "gopkg.in/tomb.v1"
   packages = ["."]
   pruneopts = "UT"
-  revision = "c131134a1947e9afd9cecfe11f4c6dff0732ae58"
+  revision = "dd632973f1e7218eb1089048e0798ec9ae7dceb8"
 
 [[projects]]
   digest = "1:342378ac4dcb378a5448dd723f0784ae519383532f5e70ade24132c4c8693202"

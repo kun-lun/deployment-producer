@@ -8,6 +8,8 @@ import (
 // use this manifest
 type Manifest struct {
 	Schema                string                 `yaml:"schema,omitempty"`
+	EnvName               string                 `yaml:"env_name"`
+	ResourceGroupName     string                 `yaml:"resource_group_name"`
 	Location              string                 `yaml:"location,omitempty"`
 	IaaS                  string                 `yaml:"iaas,omitempty"`
 	Platform              *Platform              `yaml:"platform,omitempty"`
@@ -16,7 +18,7 @@ type Manifest struct {
 	LoadBalancers         []LoadBalancer         `yaml:"load_balancers,omitempty"`
 	StorageAccounts       []StorageAccount       `yaml:"storage_accounts,omitempty"`
 	NetworkSecurityGroups []NetworkSecurityGroup `yaml:"network_security_groups,omitempty"`
-	Databases             []Database             `yaml:"databases,omitempty"`
+	MysqlDatabases        []MysqlDatabase        `yaml:"mysql_databases,omitempty"`
 }
 
 func (m *Manifest) validate() error {
