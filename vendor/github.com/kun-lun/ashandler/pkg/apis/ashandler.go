@@ -3,6 +3,7 @@ package apis
 import (
 	"github.com/kun-lun/artifacts/pkg/apis/deployments"
 	"github.com/kun-lun/ashandler/generator"
+	"github.com/kun-lun/common/fileio"
 	"github.com/kun-lun/common/storage"
 )
 
@@ -20,9 +21,10 @@ type ASHandler struct {
 func NewASHandler(
 	stateStore storage.Store,
 	logger logger,
+	fs fileio.Fs,
 ) ASHandler {
 	return ASHandler{
-		asGenerator: generator.NewASGenerator(stateStore, logger),
+		asGenerator: generator.NewASGenerator(stateStore, logger, fs),
 	}
 }
 func (a ASHandler) Handle(hostGroups []deployments.HostGroup, deployments []deployments.Deployment) error {

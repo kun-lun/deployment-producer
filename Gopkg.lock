@@ -28,14 +28,14 @@
 
 [[projects]]
   branch = "draft"
-  digest = "1:30aa013852ec76a5ea8c7bf2a0a470f20ecec59c2f13ed1d45f26b1f1fd8279d"
+  digest = "1:4cc33b161089cfc7470cd52d77af519bb90ecc116f476108132375b7d37942d9"
   name = "github.com/kun-lun/ashandler"
   packages = [
     "generator",
     "pkg/apis",
   ]
   pruneopts = "UT"
-  revision = "d45726360099e33b10a5e2f0fb44553bcb48a4fd"
+  revision = "5b2da8ee45d6f93f6156851bf36ee7b5ae2b177d"
 
 [[projects]]
   branch = "draft"
