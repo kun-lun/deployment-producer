@@ -5,6 +5,8 @@ import (
 	"path"
 
 	"github.com/kun-lun/artifacts/pkg/apis/deployments"
+	builtinroles "github.com/kun-lun/built-in-roles/pkg/apis"
+	"github.com/kun-lun/common/fileio"
 	"github.com/kun-lun/common/storage"
 	yaml "gopkg.in/yaml.v2"
 )
@@ -19,26 +21,38 @@ type logger interface {
 type ASGenerator struct {
 	stateStore storage.Store
 	logger     logger
+	fs         fileio.Fs
 }
 
 func NewASGenerator(
 	stateStore storage.Store,
 	logger logger,
+	fs fileio.Fs,
 ) ASGenerator {
 	return ASGenerator{
 		stateStore: stateStore,
 		logger:     logger,
+		fs:         fs,
 	}
 }
 
 // https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html?highlight=roles
 func (a ASGenerator) Generate(hostGroups []deployments.HostGroup, deployments []deployments.Deployment) error {
+	// generate the ansible config file.
+	builtInRolesFS, err := builtinroles.FSByte(false, "/ansible.cfg")
+	if err != nil {
+		return err
+	}
+	ansibleDir, err := a.stateStore.GetAnsibleDir()
+	ansibleConfigFile := path.Join(ansibleDir, "ansible.cfg")
+	a.fs.WriteFile(ansibleConfigFile, builtInRolesFS, 0644)
+
 	// generate the hosts files.
 	hostsFileContent := a.generateHostsFile(hostGroups)
 	ansibleInventoriesDir, _ := a.stateStore.GetAnsibleInventoriesDir()
 	hostsFile := path.Join(ansibleInventoriesDir, "hosts.yml")
 	a.logger.Printf("writting hosts file to %s\n", hostsFile)
-	err := ioutil.WriteFile(hostsFile, hostsFileContent, 0644)
+	err = a.fs.WriteFile(hostsFile, hostsFileContent, 0644)
 	if err != nil {
 		a.logger.Printf("write file failed: %s\n", err.Error())
 		return err
@@ -46,11 +60,19 @@ func (a ASGenerator) Generate(hostGroups []deployments.HostGroup, deployments []
 
 	// generate the roles files.
 	playbookContent := a.generatePlaybookFile(deployments)
-	ansibleDir, _ := a.stateStore.GetAnsibleDir()
-	playbookFile := path.Join(ansibleDir, "kunlun.yml")
+	ansibleMainFile, err := a.stateStore.GetAnsibleMainFile()
 
-	a.logger.Printf("writting playbook file to %s\n", playbookFile)
-	err = ioutil.WriteFile(playbookFile, playbookContent, 0644)
+	a.logger.Printf("writting playbook file to %s\n", ansibleMainFile)
+	err = ioutil.WriteFile(ansibleMainFile, playbookContent, 0644)
+	if err != nil {
+		a.logger.Printf("write file failed: %s\n", err.Error())
+		return err
+	}
+
+	// generate the deployment script file.
+	deploymentScriptFilePath, err := a.stateStore.GetDeploymentScriptFile()
+	deploymentScriptContent := a.generateDeploymentScript()
+	err = a.fs.WriteFile(deploymentScriptFilePath, deploymentScriptContent, 0744)
 	if err != nil {
 		a.logger.Printf("write file failed: %s\n", err.Error())
 		return err
@@ -111,7 +133,7 @@ type role struct {
 }
 type depItem struct {
 	Hosts    string   `yaml:"hosts"`
-	VarsFile []string `yaml:"var_files"`
+	VarsFile []string `yaml:"vars_files"`
 	Roles    []role   `yaml:"roles"`
 }
 
@@ -154,4 +176,14 @@ func (a ASGenerator) generatePlaybookFile(deployments []deployments.Deployment) 
 	}
 	content, _ := yaml.Marshal(depItems)
 	return content
+}
+
+func (a ASGenerator) generateDeploymentScript() []byte {
+	// varsDir, _ := a.stateStore.GetAnsibleDir()
+	deploymentScript := (`#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export ANSIBLE_CONFIG=$DIR/ansible/ansible.cfg
+ansible-playbook -i $DIR/ansible/inventories $DIR/ansible/main.yml -vv
+`)
+	return []byte(deploymentScript)
 }

@@ -1,9 +1,16 @@
 package apis
 
 import (
+	"fmt"
+	"io/ioutil"
+	"path"
+
 	yaml "gopkg.in/yaml.v2"
 
 	artifacts "github.com/kun-lun/artifacts/pkg/apis"
+	"github.com/kun-lun/common/storage"
+
+	"github.com/spf13/afero"
 )
 
 type TestInfra struct{}
@@ -185,4 +192,35 @@ func (ti TestInfra) BuildSampleManifest() *artifacts.Manifest {
 		MysqlDatabases:        databases,
 	}
 	return m
+}
+
+func (ti TestInfra) PrepareForDeploymentCmd() storage.Store {
+
+	// File IO
+	fs := afero.NewOsFs()
+	afs := &afero.Afero{Fs: fs}
+
+	// Configuration
+	tempDir, _ := ioutil.TempDir("", "")
+	fmt.Printf("store root dir is %s\n", tempDir)
+	stateStore := storage.NewStore(tempDir, afs)
+
+	sampleManifest := ti.BuildSampleManifest()
+	content, _ := sampleManifest.ToYAML()
+	mainArtifactPath, _ := stateStore.GetMainArtifactFilePath()
+	afs.WriteFile(mainArtifactPath, content, 0644)
+
+	// write the ops files.
+	opsFileContent := `- type: replace
+  path: /vm_groups/name=jumpbox/networks/0/outputs?
+  value:
+    - ip: 192.168.1.3
+    - public_ip: 202.120.30.102
+    - host: jumpbpbx.xx.com
+`
+	patchDir, _ := stateStore.GetArtifactsPatchDir()
+	opsFilePath := path.Join(patchDir, "ops1.yml")
+	fmt.Printf("writing the ops file: %s\n", opsFilePath)
+	afs.WriteFile(opsFilePath, []byte(opsFileContent), 0644)
+	return stateStore
 }
