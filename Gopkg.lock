@@ -24,18 +24,18 @@
     "pkg/apis/deployments",
   ]
   pruneopts = "UT"
-  revision = "707a72758b66c8d606a587cdc54f356df45e96be"
+  revision = "868dee36768e55cc757137c5a0effd905be46225"
 
 [[projects]]
   branch = "draft"
-  digest = "1:4cc33b161089cfc7470cd52d77af519bb90ecc116f476108132375b7d37942d9"
+  digest = "1:20b4f34cca4ca436087cf8cd6975b182959df2cb1912a95f6b8cbbb65da3ab7f"
   name = "github.com/kun-lun/ashandler"
   packages = [
     "generator",
     "pkg/apis",
   ]
   pruneopts = "UT"
-  revision = "5b2da8ee45d6f93f6156851bf36ee7b5ae2b177d"
+  revision = "6349f828f8e862c3f7e01ddc18fff269836fae99"
 
 [[projects]]
   branch = "draft"
@@ -47,14 +47,14 @@
 
 [[projects]]
   branch = "draft"
-  digest = "1:2502b014b837189978e3610f3b7b22fa880600832e87042b3445add022a2b704"
+  digest = "1:bd528d172a8c8ee07861395c80fbc05341f6bffab7754771d8f2bf4c621260b6"
   name = "github.com/kun-lun/common"
   packages = [
     "fileio",
     "storage",
   ]
   pruneopts = "UT"
-  revision = "c7becf49e2c2f7fc21488276629fc93ea4f50108"
+  revision = "f7f052e28e81f919cca7eb1c3903f896bcc1d613"
 
 [[projects]]
   branch = "draft"
@@ -212,6 +212,7 @@
     "github.com/kun-lun/artifacts/pkg/apis",
     "github.com/kun-lun/artifacts/pkg/apis/deployments",
     "github.com/kun-lun/ashandler/pkg/apis",
+    "github.com/kun-lun/common/fileio",
     "github.com/kun-lun/common/storage",
     "github.com/kun-lun/test-infra/pkg/apis",
     "github.com/onsi/ginkgo",

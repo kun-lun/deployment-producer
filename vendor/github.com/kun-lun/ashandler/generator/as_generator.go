@@ -58,6 +58,11 @@ func (a ASGenerator) Generate(hostGroups []deployments.HostGroup, deployments []
 		return err
 	}
 
+	err = a.prepareBuiltInRoles(deployments)
+	if err != nil {
+		a.logger.Printf("prepare built in roles failed: %s\n", err.Error())
+		return err
+	}
 	// generate the roles files.
 	playbookContent := a.generatePlaybookFile(deployments)
 	ansibleMainFile, err := a.stateStore.GetAnsibleMainFile()
@@ -176,6 +181,52 @@ func (a ASGenerator) generatePlaybookFile(deployments []deployments.Deployment) 
 	}
 	content, _ := yaml.Marshal(depItems)
 	return content
+}
+
+func (a ASGenerator) prepareBuiltInRoles(deployments []deployments.Deployment) error {
+	//
+	ansibleDir, err := a.stateStore.GetAnsibleDir()
+	if err != nil {
+		return err
+	}
+	stack := NewStack()
+	stack.Push("/built.in")
+	stack.Push("/roles.galaxy")
+
+	fs := builtinroles.FS(false)
+
+	for stack.Len() > 0 {
+		currentItem := stack.Pop()
+		currentPath := currentItem.(string)
+		file, err := fs.Open(currentPath)
+		if err != nil {
+			return err
+		}
+		files, err := file.Readdir(0)
+		for _, file := range files {
+			filePath := path.Join(currentPath, file.Name())
+			if file.IsDir() {
+				stack.Push(filePath)
+			} else {
+				content, err := builtinroles.FSByte(false, filePath)
+				if err != nil {
+					return err
+				}
+				targetPath := path.Join(ansibleDir, "./"+filePath)
+				a.logger.Printf("base dir is %s\n", path.Dir(targetPath))
+				err = a.fs.MkdirAll(path.Dir(targetPath), 0744)
+				if err != nil {
+					return err
+				}
+				a.logger.Printf("writing to %s\n", targetPath)
+				err = a.fs.WriteFile(targetPath, content, 0644)
+				if err != nil {
+					return err
+				}
+			}
+		}
+	}
+	return nil
 }
 
 func (a ASGenerator) generateDeploymentScript() []byte {
