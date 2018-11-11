@@ -76,7 +76,8 @@ func (dp DeploymentBuilder) produceHostGroup(vmGroup artifacts.VMGroup) (deploym
 	networkInfos := vmGroup.NetworkInfos
 
 	if len(networkInfos) == 0 || len(networkInfos[0].Outputs) == 0 {
-		return deployments.HostGroup{}, fmt.Errorf("no network info or outputs found in group %s", vmGroup.Name)
+		return deployments.HostGroup{},
+			fmt.Errorf("no network info or outputs found in group %s, %d, %d", vmGroup.Name, len(networkInfos), len(networkInfos[0].Outputs))
 	}
 	host := deployments.Host{}
 	host.User = vmGroup.OSProfile.AdminName
