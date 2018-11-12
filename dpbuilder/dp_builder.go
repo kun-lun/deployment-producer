@@ -21,20 +21,20 @@ func (dp DeploymentBuilder) Produce(
 	// generate the deployments
 	deploymentItems := []deploymentItem{}
 	for _, item := range manifest.VMGroups {
-		if item.Roles != nil && len(item.Roles) > 0 {
-			hostGroup, err := dp.produceHostGroup(item)
-			if err != nil {
-				return nil, nil, err
-			}
-			deployment, err := dp.generateDeployment(item)
-			if err != nil {
-				return nil, nil, err
-			}
-			deploymentItems = append(deploymentItems, deploymentItem{
-				hostGroup:  hostGroup,
-				deployment: deployment,
-			})
+		// if item.Roles != nil && len(item.Roles) > 0 {
+		hostGroup, err := dp.produceHostGroup(item)
+		if err != nil {
+			return nil, nil, err
 		}
+		deployment, err := dp.generateDeployment(item)
+		if err != nil {
+			return nil, nil, err
+		}
+		deploymentItems = append(deploymentItems, deploymentItem{
+			hostGroup:  hostGroup,
+			deployment: deployment,
+		})
+		// }
 	}
 	// generate the ansible scripts based on the deployments.
 	hostGroups := []deployments.HostGroup{}
