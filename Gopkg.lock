@@ -2,6 +2,14 @@
 
 
 [[projects]]
+  branch = "master"
+  digest = "1:71570cb9af58f4981cd3b6ac9902b37e978e1f3c34f35a04a3a4837ea542500f"
+  name = "github.com/cppforlife/go-patch"
+  packages = ["patch"]
+  pruneopts = "UT"
+  revision = "250da0e0e68ce3367b4302f34218f6c064eb9559"
+
+[[projects]]
   digest = "1:a1038ef593beb4771c8f0f9c26e8b00410acd800af5c6864651d9bf160ea1813"
   name = "github.com/hpcloud/tail"
   packages = [
@@ -17,25 +25,25 @@
 
 [[projects]]
   branch = "draft"
-  digest = "1:c6634f48624c74efda2eb011ef0bc353633988208e47f70f9f8f4bf917cf26d0"
+  digest = "1:46a4117c3adbf8b725a9b6084c9237c45660fbee4da876ec4019902bffde1668"
   name = "github.com/kun-lun/artifacts"
   packages = [
     "pkg/apis",
     "pkg/apis/deployments",
   ]
   pruneopts = "UT"
-  revision = "868dee36768e55cc757137c5a0effd905be46225"
+  revision = "69d9b2f24e664149115c90caf9da8a2f1d689739"
 
 [[projects]]
   branch = "draft"
-  digest = "1:20b4f34cca4ca436087cf8cd6975b182959df2cb1912a95f6b8cbbb65da3ab7f"
+  digest = "1:467cdc5a13944a84f2fee5c42cae67fe14884a82036a082bdd3d406417084740"
   name = "github.com/kun-lun/ashandler"
   packages = [
     "generator",
     "pkg/apis",
   ]
   pruneopts = "UT"
-  revision = "6349f828f8e862c3f7e01ddc18fff269836fae99"
+  revision = "48c0aba27b42d1bbdfb6212f9c513de187bf9d04"
 
 [[projects]]
   branch = "draft"
@@ -47,14 +55,23 @@
 
 [[projects]]
   branch = "draft"
-  digest = "1:bd528d172a8c8ee07861395c80fbc05341f6bffab7754771d8f2bf4c621260b6"
+  digest = "1:30122ab3436b9bb73515cf0ffe17efd4781b4a11a565fa2e8d85832909551023"
   name = "github.com/kun-lun/common"
   packages = [
+    "errors",
     "fileio",
     "storage",
   ]
   pruneopts = "UT"
   revision = "f7f052e28e81f919cca7eb1c3903f896bcc1d613"
+
+[[projects]]
+  branch = "draft"
+  digest = "1:daaafd2fe895b83b7124fa0a584fe88bba34f1221d6a2a96b7021b88d129666d"
+  name = "github.com/kun-lun/patching"
+  packages = ["pkg/apis"]
+  pruneopts = "UT"
+  revision = "4655840a709c53b6dd44f0997561dc70098e88ae"
 
 [[projects]]
   branch = "draft"
@@ -121,6 +138,14 @@
   version = "v1.4.2"
 
 [[projects]]
+  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
   digest = "1:6a4a11ba764a56d2758899ec6f3848d24698d48442ebce85ee7a3f63284526cd"
   name = "github.com/spf13/afero"
   packages = [
@@ -130,6 +155,22 @@
   pruneopts = "UT"
   revision = "d40851caa0d747393da1ffb28f7f9d8b4eeffebd"
   version = "v1.1.2"
+
+[[projects]]
+  branch = "master"
+  digest = "1:082c538aa8ca5e086d5d20ec16417e7fca237de2c4146485e02aa09989d0ff38"
+  name = "golang.org/x/crypto"
+  packages = [
+    "curve25519",
+    "ed25519",
+    "ed25519/internal/edwards25519",
+    "internal/chacha20",
+    "internal/subtle",
+    "poly1305",
+    "ssh",
+  ]
+  pruneopts = "UT"
+  revision = "e4dc69e5b2fd71dcaf8bd5d054eb936deb78d1fa"
 
 [[projects]]
   branch = "master"

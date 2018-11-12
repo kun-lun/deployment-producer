@@ -1,6 +1,8 @@
 package generator
 
 import (
+	"errors"
+	"fmt"
 	"io/ioutil"
 	"path"
 
@@ -8,6 +10,7 @@ import (
 	builtinroles "github.com/kun-lun/built-in-roles/pkg/apis"
 	"github.com/kun-lun/common/fileio"
 	"github.com/kun-lun/common/storage"
+	patching "github.com/kun-lun/patching/pkg/apis"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -74,15 +77,73 @@ func (a ASGenerator) Generate(hostGroups []deployments.HostGroup, deployments []
 		return err
 	}
 
+	// generate the private key.
+	privateSshKey, err := a.getAdminSSHPrivateKey()
+	if err != nil {
+		a.logger.Printf("get admin ssh private key failed: %s\n", err.Error())
+		return err
+	}
+	sshPrivateKeyPath, err := a.getSSHPrivateKeyPath()
+	if err != nil {
+		return err
+	}
+	err = a.fs.WriteFile(sshPrivateKeyPath, ([]byte)(privateSshKey), 0600)
+	if err != nil {
+		return err
+	}
+
 	// generate the deployment script file.
 	deploymentScriptFilePath, err := a.stateStore.GetDeploymentScriptFile()
-	deploymentScriptContent := a.generateDeploymentScript()
+	deploymentScriptContent, err := a.generateDeploymentScript()
+	if err != nil {
+		return err
+	}
 	err = a.fs.WriteFile(deploymentScriptFilePath, deploymentScriptContent, 0744)
 	if err != nil {
 		a.logger.Printf("write file failed: %s\n", err.Error())
 		return err
 	}
 	return nil
+}
+
+func (a ASGenerator) getSSHPrivateKeyPath() (string, error) {
+	varsFolder, err := a.stateStore.GetVarsDir()
+	if err != nil {
+		return "", err
+	}
+	sshPrivateKeyPath := path.Join(varsFolder, "admin_ssh_private_key")
+	return sshPrivateKeyPath, nil
+}
+
+func (a ASGenerator) getAdminSSHPrivateKey() (string, error) {
+	varsStore := patching.NewVarsFSStore(
+		a.fs,
+	)
+
+	varsStoreFilePath, err := a.stateStore.GetMainArtifactVarsStoreFilePath()
+	if err != nil {
+		return "", err
+	}
+
+	err = varsStore.UnmarshalFlag(varsStoreFilePath)
+	if err != nil {
+		return "", err
+	}
+	privateKey := patching.VariableDefinition{
+		Name: "admin_ssh", // TODO(andy) HARD CODE THIS, think about a better way to get the private key.
+	}
+
+	adminSSH, _, err := varsStore.Get(privateKey)
+
+	if err != nil {
+		return "", err
+	}
+	for k, v := range adminSSH.(map[interface{}]interface{}) {
+		if k.(string) == "private_key" {
+			return v.(string), nil
+		}
+	}
+	return "", errors.New("no privat key found")
 }
 
 // TODO error handling.
@@ -128,13 +189,13 @@ func (a ASGenerator) generateHostsFile(hostGroups []deployments.HostGroup) []byt
 type AnsibleHost struct {
 	Host          string `yaml:"ansible_host"`
 	SSHUser       string `yaml:"ansible_ssh_user"`
-	SSHCommonArgs string `yaml:"ansible_ssh_common_args"`
+	SSHCommonArgs string `yaml:"ansible_ssh_common_args,omitempty"`
 }
 
 type role struct {
 	Role       string `yaml:"role"`
-	Become     string `yaml:"become"`
-	BecomeUser string `yaml:"become_user"`
+	Become     string `yaml:"become,omitempty"`
+	BecomeUser string `yaml:"become_user,omitempty"`
 }
 type depItem struct {
 	Hosts    string   `yaml:"hosts"`
@@ -177,6 +238,23 @@ func (a ASGenerator) generatePlaybookFile(deployments []deployments.Deployment) 
 			Hosts:    dep.HostGroupName,
 			VarsFile: []string{varsFile},
 		}
+
+		roles := []role{}
+		for _, r := range dep.Roles {
+			if r.BecomeUser != "" {
+				roles = append(roles, role{
+					Role:       r.Name,
+					Become:     "true",
+					BecomeUser: r.BecomeUser,
+				})
+			} else {
+				roles = append(roles, role{
+					Role: r.Name,
+				})
+			}
+		}
+
+		depItem.Roles = roles
 		depItems = append(depItems, depItem)
 	}
 	content, _ := yaml.Marshal(depItems)
@@ -213,12 +291,12 @@ func (a ASGenerator) prepareBuiltInRoles(deployments []deployments.Deployment) e
 					return err
 				}
 				targetPath := path.Join(ansibleDir, "./"+filePath)
-				a.logger.Printf("base dir is %s\n", path.Dir(targetPath))
+				// a.logger.Printf("base dir is %s\n", path.Dir(targetPath))
 				err = a.fs.MkdirAll(path.Dir(targetPath), 0744)
 				if err != nil {
 					return err
 				}
-				a.logger.Printf("writing to %s\n", targetPath)
+				// a.logger.Printf("writing to %s\n", targetPath)
 				err = a.fs.WriteFile(targetPath, content, 0644)
 				if err != nil {
 					return err
@@ -229,12 +307,16 @@ func (a ASGenerator) prepareBuiltInRoles(deployments []deployments.Deployment) e
 	return nil
 }
 
-func (a ASGenerator) generateDeploymentScript() []byte {
+func (a ASGenerator) generateDeploymentScript() ([]byte, error) {
 	// varsDir, _ := a.stateStore.GetAnsibleDir()
-	deploymentScript := (`#!/bin/bash
+	sshPrivateKeyPath, err := a.getSSHPrivateKeyPath()
+	if err != nil {
+		return nil, err
+	}
+	deploymentScript := fmt.Sprintf(`#!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export ANSIBLE_CONFIG=$DIR/ansible/ansible.cfg
-ansible-playbook -i $DIR/ansible/inventories $DIR/ansible/main.yml -vv
-`)
-	return []byte(deploymentScript)
+ansible-playbook -i $DIR/ansible/inventories $DIR/ansible/main.yml -vv --private-key=%s
+`, sshPrivateKeyPath)
+	return []byte(deploymentScript), nil
 }
