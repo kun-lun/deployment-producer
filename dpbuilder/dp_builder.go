@@ -129,7 +129,8 @@ func (dp DeploymentBuilder) generateDeployment(vmGroup artifacts.VMGroup) (deplo
 
 	for _, role := range vmGroup.Roles {
 		deployment.Roles = append(deployment.Roles, artifacts.Role{
-			Name: role.Name,
+			Name:       role.Name,
+			BecomeUser: role.BecomeUser,
 		})
 		// append the vars
 		deployment.Vars = role.Vars
