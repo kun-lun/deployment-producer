@@ -6,6 +6,7 @@ import (
 
 	artifacts "github.com/kun-lun/artifacts/pkg/apis"
 	deployments "github.com/kun-lun/artifacts/pkg/apis/deployments"
+	yaml "gopkg.in/yaml.v2"
 )
 
 type deploymentItem struct {
@@ -133,7 +134,15 @@ func (dp DeploymentBuilder) generateDeployment(vmGroup artifacts.VMGroup) (deplo
 			BecomeUser: role.BecomeUser,
 		})
 		// append the vars
-		deployment.Vars = role.Vars
+		if deployment.Vars == nil {
+			deployment.Vars = yaml.MapSlice{}
+		} else {
+			// TODO merge these together now, but we should think about to seperate them because
+			// the names may conflict.
+			for _, item := range role.Vars {
+				deployment.Vars = append(deployment.Vars, item)
+			}
+		}
 	}
 	return deployment, nil
 }
